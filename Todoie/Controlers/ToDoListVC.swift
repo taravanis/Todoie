@@ -120,12 +120,6 @@ class ToDoListVC: UITableViewController  {
             request.predicate = categoryPredicate
         }
         
-//        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, predicate])
-
-//        request.predicate = compoundPredicate
-        
-//        request.predicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
-        
         do {
             itemArray =  try context.fetch(request)
         }
@@ -143,11 +137,11 @@ extension ToDoListVC: UISearchBarDelegate {
         
         let request: NSFetchRequest<Item> = Item.fetchRequest()
         
-        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        let searchPredicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
         
         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
         
-        loadItems(with: request, predicate: predicate)
+        loadItems(with: request, predicate: searchPredicate)
         
     }
     
