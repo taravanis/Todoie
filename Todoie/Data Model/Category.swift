@@ -14,6 +14,7 @@ class Category: Object {
  
 // This is a column in the realm database
     @objc dynamic var name = ""
+    @objc dynamic var columnColor = ""
 
 // Forward relationship of Realm Category table to Item table:  A category can point to a list item object
     let items = List<Item>()
