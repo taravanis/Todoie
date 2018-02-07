@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class ToDoListVC: UITableViewController  {
+class ToDoListVC: SwipetableVC  {
 
     let realm = try! Realm()
     var todoItems: Results<Item>?
@@ -35,7 +35,7 @@ class ToDoListVC: UITableViewController  {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
         if let item = todoItems?[indexPath.row] {
             cell.textLabel?.text = item.title
@@ -55,8 +55,7 @@ class ToDoListVC: UITableViewController  {
         if let item = todoItems?[indexPath.row] {
             do {
                 try realm.write {
-                    item.done = !item.done // this line is updating the realm database
-// this line deletes from the realm database-----> realm.delete(item)
+                    item.done = !item.done
                 }
             }
             catch {
@@ -97,6 +96,26 @@ class ToDoListVC: UITableViewController  {
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
     }
+    
+    // MARK: - Delete Data from Swipe
+    
+    override func updateModel(at indexPath: IndexPath) {
+        if let itemToDelete = todoItems?[indexPath.row] {
+            
+            do {
+                try realm.write {
+                    realm.delete(itemToDelete)
+                    
+                }
+            }
+            catch {
+                print("Error deleting item, \(error)")
+            }
+        }
+    }
+
+    
+    
     
     //MARK: - Model manupulation methods
     
