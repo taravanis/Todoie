@@ -36,6 +36,7 @@ class CategoryVC: SwipetableVC {
         cell.backgroundColor = UIColor(hexString: categories?[indexPath.row].columnColor ?? "1D9BF6")
         print("hex value is \(randomColor)")
         cell.textLabel?.text = categories?[indexPath.row].name ?? "No categories added yet"
+        cell.textLabel?.textColor = ContrastColorOf(cell.backgroundColor!, returnFlat: true)
         return cell
     }
     

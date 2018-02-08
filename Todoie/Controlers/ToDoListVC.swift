@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import ChameleonFramework
 
 class ToDoListVC: SwipetableVC  {
 
@@ -40,6 +41,11 @@ class ToDoListVC: SwipetableVC  {
         if let item = todoItems?[indexPath.row] {
             cell.textLabel?.text = item.title
             cell.accessoryType = item.done ? .checkmark : .none
+            if let colour = UIColor(hexString: self.selectedCategory!.columnColor)?.darken(byPercentage:
+                CGFloat(indexPath.row) / CGFloat(todoItems!.count)){
+                cell.backgroundColor = colour
+                cell.textLabel?.textColor = ContrastColorOf(cell.backgroundColor!, returnFlat: true)
+            }
         } else {
             cell.textLabel?.text = "No items added"
         }
