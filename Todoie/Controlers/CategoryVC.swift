@@ -33,10 +33,12 @@ class CategoryVC: SwipetableVC {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        cell.backgroundColor = UIColor(hexString: categories?[indexPath.row].columnColor ?? "1D9BF6")
-        print("hex value is \(randomColor)")
-        cell.textLabel?.text = categories?[indexPath.row].name ?? "No categories added yet"
-        cell.textLabel?.textColor = ContrastColorOf(cell.backgroundColor!, returnFlat: true)
+        if let category = categories?[indexPath.row] {
+            cell.textLabel?.text = category.name
+            guard let categoryColor = UIColor(hexString: category.columnColor) else {fatalError()}
+            cell.backgroundColor = categoryColor
+            cell.textLabel?.textColor = ContrastColorOf(categoryColor, returnFlat: true)
+        }
         return cell
     }
     
@@ -117,34 +119,4 @@ class CategoryVC: SwipetableVC {
     }
     
 }
-
-//extension UIColor {
-//    public convenience init?(hexString: String) {
-//        let r, g, b, a: CGFloat
-//
-//        if hexString.hasPrefix("#") {
-//            let start = hexString.index(hexString.startIndex, offsetBy: 1)
-//            let hexColor = String(hexString[start...])
-//
-//            if hexColor.count == 8 {
-//                let scanner = Scanner(string: hexColor)
-//                var hexNumber: UInt64 = 0
-//
-//                if scanner.scanHexInt64(&hexNumber) {
-//                    r = CGFloat((hexNumber & 0xff000000) >> 24) / 255
-//                    g = CGFloat((hexNumber & 0x00ff0000) >> 16) / 255
-//                    b = CGFloat((hexNumber & 0x0000ff00) >> 8) / 255
-//                    a = CGFloat(hexNumber & 0x000000ff) / 255
-//
-//                    self.init(red: r, green: g, blue: b, alpha: a)
-//                    return
-//                }
-//            }
-//        }
-//
-//        return nil
-//    }
-//}
-//
-
 

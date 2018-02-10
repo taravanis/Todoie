@@ -21,11 +21,33 @@ class ToDoListVC: SwipetableVC  {
         }
     }
     
+    @IBOutlet weak var searchBar: UISearchBar!
+
+    // MARK: - View methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        title = selectedCategory?.name
+        guard let colorHex = selectedCategory?.columnColor else {fatalError()}
+        updateNavBar(withHexCode: colorHex)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        updateNavBar(withHexCode: "1D9BF6")
+    }
+    
+    // MARK: - Nav Bar Setup Methods
+    
+    func updateNavBar(withHexCode colorHexCode:String) {
+        guard let navBar = navigationController?.navigationBar else {fatalError("Navigation controller does not exist")}
+        guard let navBarColor = UIColor(hexString: colorHexCode) else {fatalError()}
+        navBar.barTintColor = navBarColor
+        navBar.tintColor = ContrastColorOf(navBarColor, returnFlat: true)
+        navBar.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor : ContrastColorOf(navBarColor, returnFlat: true)]
+        searchBar.barTintColor = navBarColor
     }
     
     //MARK: - Tableview Datasource Methods
@@ -124,19 +146,6 @@ class ToDoListVC: SwipetableVC  {
     
     
     //MARK: - Model manupulation methods
-    
-//    func saveItem(item: Item) {
-//
-//        do {
-//            try realm.write {
-//                realm.add(item)
-//            }
-//        }
-//        catch {
-//            print("Error saving context \(error)")
-//        }
-//        self.tableView.reloadData()
-//    }
     
     func loadItems() {
 
